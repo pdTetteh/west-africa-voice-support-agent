@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.python-version
+
+# Virtualenvs
+.venv/
+.venv311/
+
+# Env
+.env
+
+# OS
+.DS_Store
+
+# Test / cache
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Model/cache
+.cache/
+
+*.egg-info/
+west_africa_voice_support_agent.egg-info/
+
+samples/demo/voice-support-demo.gif
