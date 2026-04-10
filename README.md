@@ -28,15 +28,28 @@ This repo is a focused demonstration of how to build a safer support assistant f
 
 ## Demo assets
 
-### Screenshots
-- `samples/screenshots/docs-transcribe.png`
-- `samples/screenshots/docs-voice-ask-wrong-recipient.png`
-- `samples/screenshots/docs-voice-ask-locked-account.png`
-- `samples/screenshots/eval-report.png`
+## Screenshots
 
-### Demo recording
-- `samples/demo/voice-support-demo.gif`
-- or `samples/demo/voice-support-demo.mp4`
+<p align="center">
+  <img src="samples/screenshots/docs-transcribe.png" alt="Transcribe endpoint" width="800">
+</p>
+
+<p align="center">
+  <img src="samples/screenshots/docs-voice-ask-wrong-recipient.png" alt="Voice ask wrong recipient" width="800">
+</p>
+
+<p align="center">
+  <img src="samples/screenshots/docs-voice-ask-locked-account.png" alt="Voice ask locked account" width="800">
+</p>
+
+<p align="center">
+  <img src="samples/screenshots/eval-report.png" alt="Evaluation report" width="800">
+</p>
+
+## Demo video
+
+[Watch the demo video](samples/demo/voice-support-demo.mp4)
+
 
 ## What it does
 
