@@ -107,3 +107,24 @@ class TicketResponse(BaseModel):
     status: str
     summary: str
     created_at: str
+
+class KBDocumentResponse(BaseModel):
+    id: Optional[int] = None
+    filename: str
+    source_type: str
+    size_bytes: int
+    created_at: Optional[str] = None
+
+
+class KBUploadResponse(BaseModel):
+    id: int
+    filename: str
+    stored_filename: str
+    size_bytes: int
+    message: str
+
+
+class KBReindexResponse(BaseModel):
+    document_count: int
+    chunk_count: int
+    message: str

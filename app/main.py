@@ -11,6 +11,7 @@ from app.api.routes_health import router as health_router
 from app.api.routes_transcribe import router as transcribe_router
 from app.core.config import settings
 from app.core.db import create_db_and_tables
+from app.api.routes_kb import router as kb_router
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 FRONTEND_DIR = BASE_DIR / "frontend"
@@ -39,3 +40,4 @@ app.include_router(ask_router, tags=["support"])
 app.include_router(transcribe_router, tags=["voice"])
 app.include_router(eval_router, tags=["evaluation"])
 app.include_router(chat_router, tags=["chat"])
+app.include_router(kb_router, tags=["knowledge-base"])

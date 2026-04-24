@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from typing import Optional
 
-from sqlmodel import SQLModel, Field
+from sqlmodel import Field, SQLModel
 
 
 def utc_now() -> datetime:
@@ -34,4 +34,14 @@ class Ticket(SQLModel, table=True):
     issue_type: str
     status: str = Field(default="open")
     summary: str
+    created_at: datetime = Field(default_factory=utc_now)
+
+
+class KBDocument(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    original_filename: str
+    stored_filename: str = Field(index=True)
+    relative_path: str
+    content_type: Optional[str] = None
+    size_bytes: int
     created_at: datetime = Field(default_factory=utc_now)

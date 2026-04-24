@@ -144,6 +144,38 @@
           <div id="voiceResult" class="result-box"></div>
         </section>
 
+        <section class="tool-card kb-card">
+          <div class="section-heading">
+            <div>
+              <h2>Knowledge base</h2>
+              <p>Upload company FAQs, policies, and support guides.</p>
+            </div>
+            <span class="icon-bubble">📚</span>
+          </div>
+
+          <form id="kbForm" class="kb-form">
+            <label class="upload-box compact">
+              <input id="kbInput" type="file" accept=".md,.txt" />
+              <span>Upload support doc</span>
+              <small>Markdown or text files</small>
+            </label>
+
+            <div class="kb-actions">
+              <button type="submit">Upload</button>
+              <button type="button" id="reindexKbBtn" class="ghost-dark">Reindex</button>
+            </div>
+          </form>
+
+          <div class="kb-header-row">
+            <span id="kbCount" class="small-pill">0 docs</span>
+            <button id="refreshKbBtn" class="tiny-button">Refresh</button>
+          </div>
+
+          <div id="kbList" class="kb-list">
+            <p class="muted">No documents loaded yet.</p>
+          </div>
+        </section>
+
         <section class="tool-card">
           <div class="section-heading">
             <div>

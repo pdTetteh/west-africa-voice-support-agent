@@ -12,6 +12,12 @@ const refreshTicketsBtn = document.getElementById("refreshTicketsBtn");
 const voiceForm = document.getElementById("voiceForm");
 const audioInput = document.getElementById("audioInput");
 const voiceResult = document.getElementById("voiceResult");
+const kbForm = document.getElementById("kbForm");
+const kbInput = document.getElementById("kbInput");
+const kbList = document.getElementById("kbList");
+const kbCount = document.getElementById("kbCount");
+const refreshKbBtn = document.getElementById("refreshKbBtn");
+const reindexKbBtn = document.getElementById("reindexKbBtn");
 
 function clearWelcomeCard() {
   const welcome = chatWindow.querySelector(".welcome-card");
@@ -139,6 +145,127 @@ async function loadTickets() {
   }
 }
 
+function formatBytes(bytes) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+async function loadKBDocuments() {
+  const response = await fetch("/kb/documents");
+
+  if (!response.ok) {
+    kbList.innerHTML = "<p class='muted'>Failed to load knowledge-base documents.</p>";
+    return;
+  }
+
+  const docs = await response.json();
+  kbCount.textContent = `${docs.length} docs`;
+
+  if (docs.length === 0) {
+    kbList.innerHTML = "<p class='muted'>No knowledge-base documents yet.</p>";
+    return;
+  }
+
+  kbList.innerHTML = "";
+
+  for (const doc of docs) {
+    const item = document.createElement("div");
+    item.className = "kb-doc";
+
+    const canDelete = doc.source_type === "uploaded" && doc.id !== null;
+
+    item.innerHTML = `
+      <span class="kb-source-badge ${doc.source_type}">
+        ${doc.source_type}
+      </span>
+      <strong>${doc.filename}</strong>
+      <div class="kb-doc-meta">
+        <span>${formatBytes(doc.size_bytes)}</span>
+        ${doc.created_at ? `<span>${new Date(doc.created_at).toLocaleString()}</span>` : ""}
+      </div>
+      ${
+        canDelete
+          ? `<button class="delete-doc-button" data-doc-id="${doc.id}">Delete</button>`
+          : ""
+      }
+    `;
+
+    kbList.appendChild(item);
+  }
+
+  document.querySelectorAll(".delete-doc-button").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const docId = button.dataset.docId;
+      await deleteKBDocument(docId);
+    });
+  });
+}
+
+async function uploadKBDocument(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  kbList.innerHTML = "<p class='muted'>Uploading document...</p>";
+
+  const response = await fetch("/kb/upload", {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    kbList.innerHTML = `<p class='muted'>Upload failed: ${error.detail || "unknown error"}</p>`;
+    return;
+  }
+
+  await loadKBDocuments();
+}
+
+async function deleteKBDocument(docId) {
+  const confirmed = window.confirm("Delete this uploaded knowledge-base document?");
+  if (!confirmed) return;
+
+  const response = await fetch(`/kb/documents/${docId}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    alert("Failed to delete document.");
+    return;
+  }
+
+  await loadKBDocuments();
+}
+
+async function reindexKnowledgeBase() {
+  kbList.innerHTML = "<p class='muted'>Reindexing knowledge base...</p>";
+
+  const response = await fetch("/kb/reindex", {
+    method: "POST",
+  });
+
+  if (!response.ok) {
+    kbList.innerHTML = "<p class='muted'>Reindex failed.</p>";
+    return;
+  }
+
+  const data = await response.json();
+  await loadKBDocuments();
+
+  const notice = document.createElement("div");
+  notice.className = "kb-doc";
+  notice.innerHTML = `
+    <span class="kb-source-badge uploaded">reindexed</span>
+    <strong>${data.document_count} documents · ${data.chunk_count} chunks</strong>
+    <div class="kb-doc-meta">
+      <span>${data.message}</span>
+    </div>
+  `;
+
+  kbList.prepend(notice);
+}
+
 function formatIssueType(issueType) {
   return issueType
     .split("_")
@@ -225,4 +352,21 @@ voiceForm.addEventListener("submit", async (event) => {
   await runVoiceAsk(file);
 });
 
+kbForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const file = kbInput.files[0];
+  if (!file) {
+    alert("Choose a .md or .txt file first.");
+    return;
+  }
+
+  await uploadKBDocument(file);
+  kbInput.value = "";
+});
+
+refreshKbBtn.addEventListener("click", loadKBDocuments);
+reindexKbBtn.addEventListener("click", reindexKnowledgeBase);
+
 loadTickets();
+loadKBDocuments();
