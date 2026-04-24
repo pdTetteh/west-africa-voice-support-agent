@@ -131,3 +131,44 @@ Retrieved evidence
 Final output
   ├─> evidence-backed response
   └─> escalation to human support
+
+
+## Open-source status
+
+This project is open-sourced as a prototype/community edition.
+
+It is intended to demonstrate how a voice-first support copilot can be built for low-resource West African customer-service settings using:
+
+- local speech transcription
+- hybrid retrieval
+- grounded answer generation
+- ticketing and escalation
+- knowledge-base management
+- offline evaluation
+
+The open-source version is suitable for learning, research, experimentation, and portfolio review. A production deployment should add authentication, secure storage, stronger access control, monitoring, database migrations, and careful handling of real customer data.
+
+## Data and privacy warning
+
+Do not upload or commit real customer data, private audio, private business documents, API keys, production databases, or personally identifiable information to this repository.
+
+For local testing, use synthetic examples or documents you have permission to share.
+
+## Environment variables
+
+Copy the example environment file:
+
+```bash
+cp .env.example .env
+
+## Contributing
+
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, contribution guidelines, and safety notes.
+
+## Security
+
+Please read [SECURITY.md](SECURITY.md) before using this project with any sensitive data.
+
+## License
+
+This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE) for details.
