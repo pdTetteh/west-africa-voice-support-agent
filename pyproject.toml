@@ -17,6 +17,7 @@ dependencies = [
     "numpy>=2.1.0",
     "scikit-learn>=1.5.0",
     "faster-whisper>=1.1.0",
+    "sqlmodel>=0.0.22",
 ]
 
 [project.optional-dependencies]

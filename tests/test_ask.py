@@ -17,7 +17,9 @@ def test_ask_returns_structured_response() -> None:
     assert "confidence" in payload
     assert isinstance(payload["evidence"], list)
     assert payload["evidence"][0]["source"] == "cashout_failures.md"
-    assert "support guidance" in payload["answer"].lower()
+    assert "i’m sorry" in payload["answer"].lower() or "i'm sorry" in payload["answer"].lower()
+    assert "assistant should" not in payload["answer"].lower()
+    assert "system should" not in payload["answer"].lower()
 
 
 def test_ask_wrong_person_includes_specific_evidence() -> None:
@@ -29,10 +31,11 @@ def test_ask_wrong_person_includes_specific_evidence() -> None:
     payload = response.json()
     assert payload["escalate"] is True
     assert payload["evidence"][0]["source"] == "wrong_recipient.md"
+    assert "cannot guarantee reversal" in payload["answer"].lower()
     assert "primary evidence" in payload["reason"].lower()
 
 
-def test_ask_locked_account_returns_grounded_answer() -> None:
+def test_ask_locked_account_returns_customer_friendly_answer() -> None:
     response = client.post(
         "/ask",
         json={"query": "I cannot sign in because my account is locked"},
@@ -40,4 +43,5 @@ def test_ask_locked_account_returns_grounded_answer() -> None:
     assert response.status_code == 200
     payload = response.json()
     assert payload["evidence"][0]["source"] == "account_locked.md"
-    assert "support guidance" in payload["answer"].lower()
+    assert "unable to access your account" in payload["answer"].lower()
+    assert "assistant should" not in payload["answer"].lower()

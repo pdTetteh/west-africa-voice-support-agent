@@ -1,5 +1,6 @@
-from pydantic import BaseModel, Field
 from typing import List, Optional
+
+from pydantic import BaseModel, Field
 
 
 class EvidenceItem(BaseModel):
@@ -55,3 +56,54 @@ class EvalSummary(BaseModel):
     average_confidence: float
     unsupported_answer_count: int
     report_path: str
+
+
+class ChatStartRequest(BaseModel):
+    user_label: Optional[str] = None
+
+
+class ChatStartResponse(BaseModel):
+    session_id: int
+    status: str
+
+
+class ChatMessageRequest(BaseModel):
+    query: str = Field(..., min_length=1)
+
+
+class ChatMessageResponse(BaseModel):
+    session_id: int
+    answer: str
+    transcript: Optional[str] = None
+    evidence: List[EvidenceItem]
+    confidence: float
+    escalate: bool
+    reason: str
+    ticket_id: Optional[int] = None
+
+
+class ChatHistoryMessage(BaseModel):
+    id: int
+    role: str
+    content: str
+    transcript: Optional[str] = None
+    answer: Optional[str] = None
+    confidence: Optional[float] = None
+    escalate: Optional[bool] = None
+    reason: Optional[str] = None
+    created_at: str
+
+
+class ChatHistoryResponse(BaseModel):
+    session_id: int
+    status: str
+    messages: List[ChatHistoryMessage]
+
+
+class TicketResponse(BaseModel):
+    id: int
+    session_id: int
+    issue_type: str
+    status: str
+    summary: str
+    created_at: str

@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     faster_whisper_language: str | None = "en"
     faster_whisper_condition_on_previous_text: bool = False
 
+    database_url: str = "sqlite:///./app.db"
     max_audio_upload_mb: int = 25
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")

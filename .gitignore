@@ -26,4 +26,6 @@ htmlcov/
 *.egg-info/
 west_africa_voice_support_agent.egg-info/
 
+samples/demo/voice-support-demo.gifapp.db
+samples/demo/voice-support-demo.gif
 samples/demo/voice-support-demo.gif
