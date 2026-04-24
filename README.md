@@ -107,31 +107,6 @@ The system supports local offline speech transcription using `faster-whisper`.
 
 The first transcription request may take longer because the ASR model is loaded on first use.
 
-## System architecture
-
-```text
-User input
-  ├─> text
-  └─> voice
-        └─> local ASR (faster-whisper)
-
-Normalized query
-  └─> hybrid retrieval
-        ├─> lexical retrieval
-        ├─> TF-IDF retrieval
-        └─> reranking
-
-Retrieved evidence
-  └─> grounded answer generation
-        └─> guardrails
-              ├─> confidence check
-              ├─> risky-intent detection
-              └─> escalation decision
-
-Final output
-  ├─> evidence-backed response
-  └─> escalation to human support
-
 
 ## Open-source status
 
@@ -172,3 +147,30 @@ Please read [SECURITY.md](SECURITY.md) before using this project with any sensit
 ## License
 
 This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE) for details.
+
+## System architecture
+
+```text
+User input
+  ├─> text
+  └─> voice
+        └─> local ASR (faster-whisper)
+
+Normalized query
+  └─> hybrid retrieval
+        ├─> lexical retrieval
+        ├─> TF-IDF retrieval
+        └─> reranking
+
+Retrieved evidence
+  └─> grounded answer generation
+        └─> guardrails
+              ├─> confidence check
+              ├─> risky-intent detection
+              └─> escalation decision
+
+Final output
+  ├─> evidence-backed response
+  └─> escalation to human support
+
+
